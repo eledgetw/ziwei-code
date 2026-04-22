@@ -144,7 +144,7 @@ function renderPresetModalRows() {
                   <select class="p-yt" style="padding:4px;"><option value="ad" ${isAd}>西元</option><option value="roc" ${isRoc}>民國</option></select>
                   <select class="p-cal" onchange="togglePresetLeapRow(this)" style="padding:4px;"><option value="solar" ${isSolar}>陽曆</option><option value="lunar" ${isLunar}>陰曆</option></select>
                   <label class="p-leap-wrap" style="display:${displayLeap}; color:#db2777; font-size:13px; font-weight:bold; white-space:nowrap;"><input type="checkbox" class="p-leap" ${isLeap}>閏</label>
-                  <input type="text" class="p-text" value="${p.text || ""}" placeholder="YYMMDD時性別 (如:700118未男)" style="flex:1; padding:4px; min-width:120px;">
+                  <input type="text" class="p-text" value="${p.text || ""}" placeholder="YYMMDD時性別 (如:680718未男)" style="flex:1; padding:4px; min-width:120px;">
               </div>
           </div>
           `;
