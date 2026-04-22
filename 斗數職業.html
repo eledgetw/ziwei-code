@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>紫微斗數 14主星 職業與特質解析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00e5ff;
+            --neon-cyan-glow: rgba(0, 229, 255, 0.5);
+            --neon-amber: #ffab00;
+            --neon-rose: #ff2a6d;
+            --dark-bg: #0b0f19;
+            --panel-bg: rgba(13, 20, 36, 0.8);
+        }
+
+        body {
+            /* 這裡已改為無襯線字體家族 */
+            font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--dark-bg);
+            /* 科技感網格背景 */
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 229, 255, 0.05);
+        }
+
+        /* 按鈕科技感樣式 */
+        .star-btn {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            background: rgba(0, 40, 60, 0.4);
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            font-weight: 500; /* 按鈕字體加粗一點 */
+        }
+        
+        .star-btn:hover {
+            background-color: rgba(0, 229, 255, 0.1);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px var(--neon-cyan-glow), inset 0 0 10px var(--neon-cyan-glow);
+        }
+
+        .star-btn.active {
+            background: var(--neon-cyan);
+            color: var(--dark-bg);
+            font-weight: 900;
+            text-shadow: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan-glow);
+            transform: translateY(-2px);
+        }
+
+        /* 內容淡入動畫 */
+        .fade-enter {
+            opacity: 0;
+            transform: translateY(15px) scale(0.98);
+        }
+        .fade-enter-active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        /* 滾動條美化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(11, 15, 25, 0.8);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 229, 255, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-cyan);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        
+        <header class="text-center mb-10 mt-4 relative">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-32 bg-cyan-600/20 blur-[80px] pointer-events-none"></div>
+            
+            <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-cyan-400 to-cyan-300 drop-shadow-[0_0_10px_rgba(0,229,255,0.8)] relative z-10">
+                紫微斗數 14主星解析
+            </h1>
+            <p class="text-cyan-100/70 tracking-[0.3em] text-sm md:text-base font-light uppercase relative z-10">
+                職業推薦與性格特質指南
+            </p>
+            <div class="w-32 h-[2px] mx-auto mt-6 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_10px_rgba(0,229,255,1)]"></div>
+        </header>
+
+        <div class="mb-10 space-y-6">
+            
+            <div class="glass-panel p-5 rounded-lg border-l-4 border-l-cyan-400">
+                <h2 class="text-lg md:text-xl font-bold text-cyan-400 mb-4 flex items-center tracking-widest drop-shadow-[0_0_5px_rgba(0,229,255,0.5)]">
+                    <span class="mr-3 text-cyan-200">◆</span> 紫微星系 (6顆)
+                </h2>
+                <div class="flex flex-wrap gap-3 md:gap-4" id="ziwei-group"></div>
+            </div>
+
+            <div class="glass-panel p-5 rounded-lg border-l-4 border-l-amber-500">
+                <h2 class="text-lg md:text-xl font-bold text-amber-400 mb-4 flex items-center tracking-widest drop-shadow-[0_0_5px_rgba(255,171,0,0.5)]">
+                    <span class="mr-3 text-amber-200">◆</span> 天府星系 (8顆)
+                </h2>
+                <div class="flex flex-wrap gap-3 md:gap-4" id="tianfu-group"></div>
+            </div>
+
+        </div>
+
+        <div class="glass-panel rounded-lg p-1 md:p-2 mb-10 min-h-[400px] relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+            
+            <div id="content-display" class="p-4 md:p-8 fade-enter relative z-10">
+                </div>
+            
+            <div class="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+        </div>
+
+        <footer class="text-center text-cyan-600 text-sm pb-8 font-mono">
+            SYSTEM ONLINE // DATA RENDERED WITH 100% ACCURACY
+        </footer>
+
+    </div>
+
+    <script>
+        const ziweiStars = ['紫微', '天機', '太陽', '武曲', '天同', '廉貞'];
+        const tianfuStars = ['天府', '太陰', '貪狼', '巨門', '天相', '天梁', '七殺', '破軍'];
+
+        const starData = {
+            "紫微": [
+                {k: "主要特質", v: "適合「做主管、當老闆」或「依靠品牌/地位」"},
+                {k: "領導與權威", v: "領導力強、統籌全局、發號施令能力佳、喜掌權、不喜受制於人、組織管理能力出色"},
+                {k: "性格風格", v: "尊貴沉穩、忠厚耿直、重感情、有責任感、待人有禮、仁慈包容、自尊心強但志氣高"},
+                {k: "其他優勢", v: "興趣廣泛、可塑性高、識達遠見、易得貴人賞識、中年後易發揮領導才能、追求高品質與社會地位"},
+                {k: "管理與領導類", v: "企業主管、高階經理人、CEO、總經理、部門主管、創業老闆、自營事業、掛名負責人"},
+                {k: "公職與政界", v: "政府機關、公務人員、政界人士、公民營企業高層、政治家、公共事業管理者"},
+                {k: "教育與專業指導", v: "教師、教授、會計師、工程師、企管顧問、專業指導或研究型工作"},
+                {k: "高端尊貴產業", v: "珠寶、古董、奢侈品、金融高管、知名大公司高職、律師、醫生等具抬頭與社會尊重的職位"},
+                {k: "其他適合方向", v: "服務業高階、文書/秘書（女性尤佳）、行政主管、實業家、需要品牌知名度或大品牌依托的工作"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "領導與權威", v: "孤君格局、剛愎自用、猜疑心重、自負高傲、耳根軟、喜掌權卻難服眾、易遭部屬背叛"},
+                {k: "性格風格", v: "孤傲封閉、權謀算計、表面尊貴內心空虛、情緒壓抑、孤立無援、晚年更顯寂寞"},
+                {k: "其他劣勢", v: "貴人變小人、事業多阻、權力鬥爭不斷、身心勞累、健康隱憂"},
+                {k: "權謀與職場", v: "職場算計、權力鬥爭、貪污腐敗、掛名負責人涉詐、內部傾軋"},
+                {k: "其他高風險", v: "非法集資、政商勾結、隱性欺壓、晚年官非或孤獨糾紛"}
+            ],
+            "天機": [
+                {k: "主要特質", v: "天機化權或化科時，策劃與學術能力更突出"},
+                {k: "智慧與思維", v: "心思細密、腦筋靈活、反應敏捷、邏輯分析力強、善策劃謀略、研究精神佳、創意與洞察力強"},
+                {k: "性格風格", v: "親切善良、溫和有禮、樂於助人、口才佳、處事有條理、學習能力強、多才多藝、好奇心重"},
+                {k: "其他優勢", v: "機變靈活、適應力高、善溝通協調、貴人運佳、喜動腦不喜勞力、富研究與創新潛力"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "策劃與企劃類", v: "企劃人員、行銷企劃、策略顧問、幕僚、參謀、諮詢師、生命教練"},
+                {k: "設計與創意類", v: "設計師（平面、產品、空間）、藝術相關、文創商品設計、內容創作者"},
+                {k: "科技與研發類", v: "程式研發、網路工程師、分析師、研發工程師、科技創新、電腦相關技術"},
+                {k: "教育與輔導類", v: "教師、教授、補教業、輔導老師、培訓師、教育行政、心理諮詢師"},
+                {k: "出版與傳播類", v: "出版社編輯、出版業、大眾傳播、寫作、媒體相關"},
+                {k: "交通與變動類", v: "駕駛員、交通規劃、物流管理、觀光旅遊、運輸相關"},
+                {k: "其他適合方向", v: "宗教命理、五術、秘書、文書處理、醫療健康規劃、專門技術研究、慈善事業"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "智慧與思維", v: "陰謀詭計、鑽牛角尖、多疑焦慮、計劃多變失敗、投機取巧、思慮過度致精神困擾"},
+                {k: "性格風格", v: "奸猾善變、口是心非、優柔寡斷、情緒不穩、易生是非"},
+                {k: "其他劣勢", v: "學習博而不精、貴人反成小人、事業多波折、健康神經衰弱"},
+                {k: "策劃與投機", v: "幕後操縱、詐騙設計、假投資、真詐欺、地下錢莊或傳銷"},
+                {k: "其他高風險", v: "情報販賣、網路欺騙、逃避責任引發官非"}
+            ],
+            "太陽": [
+                {k: "主要特質", v: "熱情服務大眾、帶領他人、站在聚光燈下"},
+                {k: "領導與行動", v: "領導力強、積極主動、熱情有活力、魄力果決、喜主導與發號施令、開創精神佳、不畏艱辛勞碌"},
+                {k: "性格風格", v: "光明磊落、正直寬大、樂觀外向、熱心助人、博愛慈悲、慷慨大方、重榮譽與面子、行俠仗義、正義感強"},
+                {k: "其他優勢", v: "人緣佳、善於激勵他人、口才表達力強、使命感與責任心重、喜接觸人群與變動、具公共服務精神"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "政治與公職類", v: "政治家、民意代表、公務員、法官、律師、軍警、行政主管、公共事務管理者"},
+                {k: "教育與培訓類", v: "教師、教授、講師、培訓師、教育行政、輔導或啟發性工作"},
+                {k: "媒體與傳播類", v: "大眾傳播、媒體從業人員、新聞主播、主持人、記者、出版業、新媒體、電影業、內容創作者"},
+                {k: "企業與貿易類", v: "企業主管、自營事業、國際貿易、外貿業務、仲介服務、業務開發"},
+                {k: "服務與公益類", v: "社會服務、慈善公益、宗教慈善、醫療體系、社工、導遊、服務業高階、公關人員"},
+                {k: "其他適合方向", v: "電力、光電、能源相關、電子業、交通運輸、旅遊業、需有舞台與名聲的公眾相關工作"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "領導與行動", v: "暴躁易怒、得罪多人、勞碌無功、衝動逞強、懷才不遇、事業多阻"},
+                {k: "性格風格", v: "情緒化、好面子卻內虛、博愛變成濫情、是非不斷"},
+                {k: "其他劣勢", v: "人緣變差、財務耗損、健康眼疾或心血管問題、晚年孤苦"},
+                {k: "公關與衝突", v: "口舌官非、衝動犯罪、非法集會或抗爭、媒體是非"},
+                {k: "其他高風險", v: "投機失敗致詐欺、酒駕或交通意外相關糾紛"}
+            ],
+            "武曲": [
+                {k: "主要特質", v: "技術型、財務型或紀律型的專業工作者，而非純創意或高度人群互動型工作"},
+                {k: "執行與行動", v: "執行力強、果決果斷、行動迅速、不拖泥帶水、勇於任事、堅毅勤奮、耐苦耐勞、有魄力"},
+                {k: "性格風格", v: "剛毅正直、重義氣與信用、務實理性、講求實際與效率、自立自強、責任心重、爽直有原則"},
+                {k: "其他優勢", v: "理財能力佳、對金錢數字敏感、善投資與規劃、專業技術強、堅持不懈、晚成但有成就潛力"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "金融與財務類", v: "銀行、證券、會計師、財務經理、理財顧問、保險、金融投資、當舖、稅務相關"},
+                {k: "軍警與執法類", v: "軍人、警察、保全、特勤、執法官、紀律部隊、武職人員"},
+                {k: "工程與技術類", v: "機械工程、電子工程、建築工程、五金機械、鋼鐵金屬、工業製造、運輸物流、維修技術"},
+                {k: "管理與實業類", v: "企業主管、創業老闆、財務長、行政主管、專業技術管理、高單價商品銷售"},
+                {k: "其他適合方向", v: "房地產相關、醫療專業（外科等技術型）、運動體育、與金屬/數字/執行相關的實務工作"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "執行與行動", v: "固執孤剋、財務破耗、勞碌貧困、剛愎無情、執行力變破壞力"},
+                {k: "性格風格", v: "冷酷無情、重利輕義、孤僻猜忌、易生是非"},
+                {k: "其他劣勢", v: "健康骨骼或呼吸道問題、家庭刑克、晚年孤苦"},
+                {k: "財務與執法", v: "非法金融、當舖高利貸、財務詐欺、軍警或執法相關腐敗"},
+                {k: "其他高風險", v: "暴力討債、地下錢莊、工程弊案"}
+            ],
+            "天同": [
+                {k: "主要特質", v: "適合「追求和諧、穩定舒適、服務他人、享受過程」的工作，強調人緣、親和力與生活品質"},
+                {k: "性格風格", v: "溫和隨和、樂觀開朗、知足常樂、心地善良、慈悲助人、平易近人、不與人爭、不計較、重感情與和諧"},
+                {k: "生活態度", v: "注重生活品質與享受、重視精神感受、幽默有童心、適應力強、機智靈活、貴人運佳、人緣極好"},
+                {k: "其他優勢", v: "福氣深厚（三大福星之一）、包容性強、善於協調與溝通、樂於服務他人、懂得放鬆與平衡工作生活"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "服務與協調類", v: "客服、行政助理、秘書、幕僚、公關、社工、心理諮商師、身心靈工作者、慈善公益"},
+                {k: "教育與照顧類", v: "教師（尤其是幼教）、培訓師、兒童或老人相關照護、社會福利工作"},
+                {k: "休閒與享受類", v: "餐飲業、咖啡店、服飾產業、休閒娛樂、度假村、旅遊導遊、按摩/養生相關"},
+                {k: "藝術與文創類", v: "藝術家、作家、插畫家、演藝圈、娛樂業、音樂相關、園藝或文藝創作"},
+                {k: "公職與穩定類", v: "公務人員、行政管理、物業管理、金融門市/櫃台、仲介服務、中大型企業輔助角色"},
+                {k: "其他適合方向", v: "醫療護理、宗教服務、銷售（需親和力）、自由業（如自由作家）、需要人際和諧與生活平衡的工作"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "性格風格", v: "懶散依賴、逃避責任、得過且過、抗壓弱、優柔寡斷"},
+                {k: "生活態度", v: "沉溺享樂、意志薄弱、易被利用、福氣反成拖累"},
+                {k: "其他劣勢", v: "事業無成、感情糾葛、健康精神問題"},
+                {k: "服務與享樂", v: "依賴他人、沉迷賭博或毒品、假慈善真詐欺"},
+                {k: "其他高風險", v: "詐領福利、地下娛樂場所從業"}
+            ],
+            "廉貞": [
+                {k: "主要特質", v: "適合「需要原則、紀律、專業判斷、形象魅力或執行力」的工作，屬「官祿主 + 次桃花 + 五鬼星」"},
+                {k: "領導與執行", v: "責任心強、盡職盡責、果斷有魄力、堅持不懈、敢作敢當、組織管理能力佳、注重原則與紀律"},
+                {k: "性格風格", v: "剛毅正直、是非分明、精明機智、能言善道、交際手腕高明、魅力十足（次桃花）、外柔內剛、注重形象"},
+                {k: "其他優勢", v: "多才多藝、藝術美感強、敏銳觀察力、第六感佳、事業心重、追求完美與卓越、適應變動與壓力"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "司法與執法類", v: "法官、律師、檢察官、法務人員、監察、政風、監獄管理、軍人、警察、保全、特勤"},
+                {k: "公職與管理類", v: "公務人員、行政主管、企業高管、品管、從政、外交官、發言人、顧問"},
+                {k: "藝術與美感類", v: "美容美髮、服裝設計、室內設計、廣告設計、藝術創作、表演演藝、網紅/明星、多媒體傳播"},
+                {k: "科技與專業類", v: "電子業、電器、通訊、程式設計、產品研發、醫療（外科/心理）、航空航太、電子競技"},
+                {k: "其他適合方向", v: "公關、業務銷售、旅遊、交通運輸、教師（尤其是需紀律者）、手工藝/文創、金融相關"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "領導與執行", v: "心狠狂傲、是非官非、血光刑訟、輕浮放蕩、原則崩壞"},
+                {k: "性格風格", v: "好酒色、次桃花過度、情緒極端、外柔內狠"},
+                {k: "其他劣勢", v: "多刑剋、事業多波、精神困擾"},
+                {k: "司法與桃花", v: "官非牢獄、桃色糾紛、地下色情或酒色場所、詐欺性侵"},
+                {k: "其他高風險", v: "黑道相關、毒品或非法交易"}
+            ],
+            "天府": [
+                {k: "主要特質", v: "適合「穩定管理、財務守成、長期規劃」的工作，屬「財庫宰相星」"},
+                {k: "領導與管理", v: "領導氣質強、穩重大方、統籌規劃能力佳、以身作則、組織管理出色、喜掌管不喜被管"},
+                {k: "性格風格", v: "保守穩健、沉著可靠、寬容慈祥、責任心重、注重實際與長遠、自信有威嚴、講求穩定與品質"},
+                {k: "其他優勢", v: "理財與守財能力強、擅長財務規劃、貴人運佳、一步一腳印、追求物質安定與長期發展"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "管理與財務類", v: "企業高管、CEO、總經理、財務長、會計師、理財顧問、金融分析師、證券投資、銀行主管"},
+                {k: "公職與行政類", v: "公務人員、行政主管、幕僚、秘書、專案經理、政府機關、大型機構管理"},
+                {k: "地產與穩定類", v: "房地產、建築、地政、物業管理、貿易、餐飲業高階、農業畜牧相關"},
+                {k: "其他適合方向", v: "大型企業穩定職位、自營事業（需穩健型）、需要長期規劃與守成的專業管理角色"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "領導與管理", v: "過度保守、守成失敗、財務困頓、固執計較、缺乏彈性"},
+                {k: "性格風格", v: "吝嗇猜忌、權力慾強卻無實、孤立無援"},
+                {k: "其他劣勢", v: "事業停滯、家庭不和、健康脾胃問題"},
+                {k: "管理與財務", v: "守財奴式貪污、非法囤積、家族企業內鬥"},
+                {k: "其他高風險", v: "地下金融或高利貸"}
+            ],
+            "太陰": [
+                {k: "主要特質", v: "適合「細膩照顧、美感設計、穩定規劃」的工作，屬「富星、田宅主、女人星」"},
+                {k: "思維與態度", v: "細膩體貼、溫柔內斂、思慮周密、耐心包容、注重細節、富想像力與美感、適應力佳"},
+                {k: "性格風格", v: "斯文婉約、善良慈悲、重感情與安全感、知性優雅、低調謹慎、樂於照顧他人、人緣溫和"},
+                {k: "其他優勢", v: "藝術美感強、規劃與管理能力佳、長期累積潛力、貴人運與庇蔭力、追求和諧與品質生活"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "設計與美感類", v: "室內設計、服飾設計、珠寶、化妝品、美工、藝術創作、美容美髮、形象顧問"},
+                {k: "照顧與醫療類", v: "醫療護理、社工、保母、長照、心理諮商、社會福利、身心靈相關"},
+                {k: "教育與行政類", v: "教師、秘書、行政助理、寫作、出版業、教育行政"},
+                {k: "地產與穩定類", v: "房地產、不動產、庭園設計、女性相關產業"},
+                {k: "其他適合方向", v: "宗教服務、演藝（需細膩表現）、需要耐心與美感的穩定性工作"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "思維與態度", v: "憂鬱多慮、情緒起伏大、優柔寡斷、暗中損耗、孤高自賞"},
+                {k: "性格風格", v: "陰沉多疑、感情糾葛、易被欺負"},
+                {k: "其他劣勢", v: "健康婦科或精神問題、晚年孤寂"},
+                {k: "設計與照顧", v: "感情詐欺、地下美容或非法醫療、暗中財務操弄"},
+                {k: "其他高風險", v: "桃花糾紛或情感勒索"}
+            ],
+            "貪狼": [
+                {k: "主要特質", v: "適合「多變、創意、人際、享受」的工作，屬「桃花主、慾望星」，強調魅力、適應與開創"},
+                {k: "行動與魅力", v: "多才多藝、適應力強、精力充沛、機智靈活、表現欲強、善於開創與探索、學習能力佳"},
+                {k: "性格風格", v: "熱情外向、人緣極佳、魅力十足（大桃花）、慾望強烈但積極追求、不拘小節、樂觀冒險"},
+                {k: "其他優勢", v: "交際手腕高、創意與才華洋溢、遇強則強、適合變動與挑戰、貴人與人脈廣闊"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "娛樂與藝術類", v: "演藝圈、影視、主持人、網紅、自媒體、藝術設計、音樂、表演、模特兒"},
+                {k: "業務與公關類", v: "業務銷售、公關、行銷、仲介、廣告、品牌推廣"},
+                {k: "餐飲與享受類", v: "餐飲業、旅遊導遊、休閒娛樂、食衣住行相關、八大（需正向經營）"},
+                {k: "變動與科技類", v: "交通運輸、新興科技、運動員、創業、外景工作、遊戲產業"},
+                {k: "其他適合方向", v: "宗教命理、身心靈、需要人際互動、美感或高變動性的工作"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "行動與魅力", v: "慾望過強、浮蕩不羈、冒險投機、好勝自傲、桃花是非"},
+                {k: "性格風格", v: "狡猾貪婪、占有欲強、好酒色、夜生活過度"},
+                {k: "其他劣勢", v: "事業多變、破財、健康肝膽或性病問題"},
+                {k: "娛樂與業務", v: "賭博、色情業、傳銷、地下娛樂、投機詐欺"},
+                {k: "其他高風險", v: "黑道或偏門生意、毒品相關"}
+            ],
+            "巨門": [
+                {k: "主要特質", v: "適合「口才、研究、溝通、是非處理」的工作，屬「暗星、藥星、口舌主」"},
+                {k: "思辨與表達", v: "能言善道、分析力強、研究精神佳、辯才無礙、洞察敏銳、追求真理、堅持原則"},
+                {k: "性格風格", v: "耿直務實、專注深刻、好學不倦、責任心重、競爭力強、內心善良但外表較嚴肅"},
+                {k: "其他優勢", v: "口才與溝通力佳、適合處理是非與專業問題、博學多聞、長期鑽研可成專家"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "口才與傳播類", v: "律師、教師、講師、記者、大眾傳播、主持人、業務員、外交人員"},
+                {k: "研究與專業類", v: "研究員、心理醫師、作家、學術、教育、顧問、生涯規劃師"},
+                {k: "醫療與服務類", v: "醫師（藥星）、保險、仲介、心理諮商、宗教服務"},
+                {k: "其他適合方向", v: "吃相關產業（餐飲研究）、需要辯論、調查或專業表達的工作"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "思辨與表達", v: "口舌暗箭、是非爭執、疑心病重、欺騙誹謗、鑽牛角尖"},
+                {k: "性格風格", v: "耿直變刻薄、好鬥、內心陰暗"},
+                {k: "其他劣勢", v: "官非不斷、健康口腔或消化問題"},
+                {k: "口才與研究", v: "詐欺銷售、造謠誹謗、律師或仲介黑幕、地下情報"},
+                {k: "其他高風險", v: "口舌官司、網路霸凌或敲詐"}
+            ],
+            "天相": [
+                {k: "主要特質", v: "適合「協調輔佐、公關服務、形象管理」的工作，屬「印星、雞婆星」，強調和諧、可靠與居中調停"},
+                {k: "協調與服務", v: "協調能力強、熱心服務、組織力佳、注重和諧、居中調和、使命必達、善於溝通上下"},
+                {k: "性格風格", v: "端莊有禮、穩重誠信、形象佳、仁慈大方、重視規矩與人際、優雅親切、責任心重"},
+                {k: "其他優勢", v: "審美與包裝能力強、忠誠可靠、行政幕僚力強、適合輔佐領導、追求公平與美感"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "行政與幕僚類", v: "秘書、特助、行政主管、幕僚、人事、專案經理、文件管理、公務人員"},
+                {k: "公關與服務類", v: "公關、業務、仲介、行銷、活動企劃、司儀、禮儀師、形象顧問"},
+                {k: "政治與管理類", v: "政治相關、里長、主委、工會、企業管理、連鎖經營、餐飲業高階"},
+                {k: "美感與產業類", v: "服飾、婚紗、餐飲、媒體、品牌包裝、時尚、出版業"},
+                {k: "其他適合方向", v: "需要協調、人際、形象或輔佐性的工作"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "協調與服務", v: "優柔被拖累、形象受損、輔佐失敗、粉飾太平、虛榮心重"},
+                {k: "性格風格", v: "輕諾寡信、多說少做、畏首畏尾"},
+                {k: "其他劣勢", v: "人際糾葛、事業停滯、健康皮膚或神經問題"},
+                {k: "行政與公關", v: "假公濟私、形象包裝詐欺、仲介黑幕、地下公關"},
+                {k: "其他高風險", v: "政治或企業內鬼、洗錢相關"}
+            ],
+            "天梁": [
+                {k: "主要特質", v: "「服務助人、傳授知識、守成監督」的工作，屬「蔭星、老人星、清貴之星」，強調慈悲、原則與精神價值"},
+                {k: "性格風格", v: "穩重老成、厚重耿直、慈悲善良、樂於助人、公正無私、有長者風範、知足常樂、原則性強"},
+                {k: "思維與態度", v: "果決機謀、智慧深厚、逢凶化吉、犧牲奉獻、注重精神價值、保守穩健、樂善好施"},
+                {k: "其他優勢", v: "貴人運與庇蔭力強、口碑佳、適合傳授知識、清高有道德感、易得長輩或社會認同"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "教育與學術類", v: "教師、教授、學術研究、教育行政、培訓師、哲學或文化相關工作"},
+                {k: "醫療與照護類", v: "醫師、中醫、護理、醫療顧問、長照、養老院、身心靈或心理諮商"},
+                {k: "公職與司法類", v: "公務人員、法官、律師、監察、稽核、紀律單位、人事行政、代言人或監督角色"},
+                {k: "宗教與慈善類", v: "宗教服務、命理風水、慈善公益、志工、環保或農牧相關"},
+                {k: "其他適合方向", v: "保險、財務顧問、家族企業接班、需要穩定守成或服務群眾的專業輔助角色"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "性格風格", v: "孤高刑剋、清高碎念、偏執自大、樂善變成碎嘴"},
+                {k: "思維與態度", v: "逢凶不化、精神困擾、晚年孤苦"},
+                {k: "其他劣勢", v: "健康骨骼或神經問題、家庭不睦"},
+                {k: "教育與宗教", v: "假慈善、真詐欺、宗教斂財、偏執糾紛"},
+                {k: "其他高風險", v: "地下命理或風水詐騙"}
+            ],
+            "七殺": [
+                {k: "主要特質", v: "「開創突破、高壓執行、領導衝鋒」的工作，屬「將星、權星」，強調果決、紀律與行動力"},
+                {k: "行動與領導", v: "行動力強、果決果斷、魄力十足、勇於任事、不畏艱險、執行力佳、危機處理能力強"},
+                {k: "性格風格", v: "剛毅正直、重義氣與承諾、講究紀律、責任心重、冷靜堅決、有將星氣勢、不怒而威"},
+                {k: "其他優勢", v: "開創與突破力強、適應變動、戰略思維佳、遇強則強、適合高壓環境、貴人與人脈經營佳"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "軍警與執法類", v: "軍人、警察、特勤、保全、消防、司法、律師、紀律部隊、危機管理"},
+                {k: "企業與管理類", v: "企業主管、創業老闆、業務開發、行銷攻堅、專案經理、金融高風險領域（如期貨）"},
+                {k: "工程與技術類", v: "工程師（機械、電機、土木）、外科醫師、五金機械、電子、科技攻堅、運輸物流"},
+                {k: "其他適合方向", v: "國際貿易、外商、航空、運動員、保險、需要領導衝鋒或突破創新的高挑戰工作"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "行動與領導", v: "衝動暴躁、意外血光、孤剋官非、剛愎自用、危機處理失控"},
+                {k: "性格風格", v: "冷酷無情、好勇鬥狠、不怒而威變成煞氣"},
+                {k: "其他劣勢", v: "事業多災、健康意外、家庭刑克"},
+                {k: "軍警與執行", v: "暴力犯罪、黑道、非法執法、衝動傷害"},
+                {k: "其他高風險", v: "意外官非、地下保全或討債"}
+            ],
+            "破軍": [
+                {k: "主要特質", v: "「求新求變、開創改革、創意發揮」的工作，屬「耗星、開創星」，強調破舊立新"},
+                {k: "開創與行動", v: "開創力強、求新求變、精力充沛、膽識過人、破舊立新、適應力強、不怕失敗與冒險"},
+                {k: "性格風格", v: "勇敢直率、理想性強、創意無限、率真直接、重感情、敢於挑戰、不拘小節"},
+                {k: "其他優勢", v: "改革與創新潛力大、執行力佳、適合大破大立、好奇心重、多才多藝、逆風翻盤力強"},
+                {k: "職業類型", v: "具體推薦職業示例"},
+                {k: "設計與創意類", v: "設計師（服裝、室內、產品、美工、珠寶）、藝術家、廣告行銷、品牌經營、文創"},
+                {k: "工程與變動類", v: "建築裝潢、拆除/資源回收、運輸物流、再生能源、化學、土木工程、發明研發"},
+                {k: "業務與開創類", v: "業務銷售、創業老闆、自媒體、娛樂演藝、運動教練、國際貿易、導遊"},
+                {k: "其他適合方向", v: "科技創新、程式開發、美容美髮、音樂舞蹈、需要求變或大破大立的創新型工作"},
+                {k: "落陷忌煞交沖", v: ""},
+                {k: "開創與行動", v: "破壞耗散、冒險失敗、感情不穩、求變變成亂變"},
+                {k: "性格風格", v: "衝動率真變魯莽、理想破滅、易生是非"},
+                {k: "其他劣勢", v: "財務大起大落、健康意外、晚年漂泊"},
+                {k: "設計與開創", v: "破壞性投機、地下拆除或回收詐欺、冒險犯罪"},
+                {k: "其他高風險", v: "感情糾紛引發官非、傳銷或非法創業"}
+            ]
+        };
+
+        function createButtons(stars, containerId) {
+            const container = document.getElementById(containerId);
+            stars.forEach(star => {
+                const btn = document.createElement('button');
+                btn.textContent = star;
+                btn.className = 'star-btn px-5 py-2.5 rounded-sm text-sm md:text-base cursor-pointer focus:outline-none tracking-wide';
+                btn.onclick = () => selectStar(star, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function renderTable(starName) {
+            const rows = starData[starName] || [];
+            
+            let html = `
+                <div class="flex items-center justify-between mb-8 pb-4 border-b border-cyan-500/30">
+                    <h3 class="text-3xl md:text-4xl font-black text-white tracking-widest drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] flex items-center">
+                        <span class="text-cyan-400 mr-2">✦</span> ${starName}星
+                    </h3>
+                    <div class="text-xs md:text-sm font-bold border ${ziweiStars.includes(starName) ? 'border-cyan-400 text-cyan-400 bg-cyan-900/40' : 'border-amber-400 text-amber-400 bg-amber-900/40'} px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+                        ${ziweiStars.includes(starName) ? '紫微星系' : '天府星系'}
+                    </div>
+                </div>
+                <div class="overflow-x-auto rounded border border-cyan-800/60 shadow-[0_0_20px_rgba(0,0,0,0.8)] bg-[#0b101e]/80">
+                    <table class="w-full text-left text-sm md:text-base">
+                        <tbody>
+            `;
+
+            let inWarningSection = false;
+
+            for (let i = 0; i < rows.length; i++) {
+                let key = rows[i].k;
+                let val = rows[i].v;
+
+                if (key.includes("落陷") || key.includes("忌煞")) {
+                    inWarningSection = true;
+                }
+
+                if (key && !val) {
+                    let headerStyle = inWarningSection 
+                        ? 'bg-rose-600/20 text-rose-400 border-y border-rose-500/50 shadow-[inset_0_0_15px_rgba(255,42,109,0.2)]' 
+                        : 'bg-cyan-900/30 text-amber-400 border-y border-cyan-500/30 shadow-[inset_0_0_15px_rgba(0,229,255,0.1)]';
+                    
+                    let icon = inWarningSection ? '⚠' : '◈';
+                    
+                    html += `
+                    <tr>
+                        <td colspan="2" class="py-4 px-5 font-bold text-lg md:text-xl text-center tracking-[0.2em] ${headerStyle}">
+                            ${icon} ${key} ${icon}
+                        </td>
+                    </tr>`;
+                } else if (!key && val) {
+                    html += `
+                    <tr class="border-b border-cyan-900/50">
+                        <td colspan="2" class="py-4 px-5 text-gray-300 leading-relaxed align-top font-light">
+                            ${val}
+                        </td>
+                    </tr>`;
+                } else {
+                    let rowHover = inWarningSection ? 'hover:bg-rose-900/20' : 'hover:bg-cyan-900/20';
+                    let keyBg = inWarningSection ? 'bg-rose-950/40 text-rose-300 border-rose-900/50' : 'bg-[#0f172a]/80 text-cyan-300 border-cyan-900/50';
+                    let valColor = inWarningSection ? 'text-gray-200' : 'text-gray-100';
+                    
+                    if(val === "具體推薦職業示例") {
+                        valColor = "text-amber-500/80 text-xs tracking-widest font-bold";
+                    }
+
+                    html += `
+                    <tr class="transition-colors duration-200 ${rowHover} border-b border-cyan-900/50 last:border-0 group">
+                        <th class="w-[1%] py-4 px-5 font-bold ${keyBg} align-top whitespace-nowrap border-r group-hover:brightness-125 transition-all tracking-wider leading-relaxed">
+                            ${key}
+                        </th>
+                        <td class="py-4 px-5 ${valColor} leading-relaxed align-top font-light">
+                            ${val}
+                        </td>
+                    </tr>`;
+                }
+            }
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            return html;
+        }
+
+        function selectStar(starName, btnElement) {
+            document.querySelectorAll('.star-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const contentDisplay = document.getElementById('content-display');
+            contentDisplay.classList.remove('fade-enter-active');
+            
+            setTimeout(() => {
+                contentDisplay.innerHTML = renderTable(starName);
+                void contentDisplay.offsetWidth; 
+                contentDisplay.classList.add('fade-enter-active');
+            }, 100);
+        }
+
+        window.onload = () => {
+            createButtons(ziweiStars, 'ziwei-group');
+            createButtons(tianfuStars, 'tianfu-group');
+            
+            const firstBtn = document.querySelector('#ziwei-group button');
+            if(firstBtn) {
+                selectStar('紫微', firstBtn);
+            }
+        };
+    </script>
+</body>
+</html>
