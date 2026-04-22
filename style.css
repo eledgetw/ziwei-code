@@ -1,0 +1,756 @@
+body {
+  font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+  background-color: #eef2f5;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px 20px;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* 整體容器：包含左右兩欄 + 下方按鈕列 */
+.app-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* 左側控制面板優化 */
+.controls-panel {
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box;
+}
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 1px dashed #cbd5e1;
+  padding-bottom: 18px;
+}
+.control-group:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.controls-title {
+  font-size: 17px;
+  font-weight: bold;
+  color: #334155;
+  letter-spacing: 0.5px;
+}
+
+/* 快速輸入面板專屬設計 */
+.quick-input-panel {
+  background-color: #f8fafc;
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+.quick-input-panel .controls-title {
+  color: #2c3e50;
+  font-size: 18px;
+}
+#birth-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+#birth-input:focus {
+  outline: none;
+  border-color: #2980b9;
+}
+#parse-btn {
+  padding: 12px;
+  margin-top: 15px;
+  background: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: bold;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(44, 62, 80, 0.2);
+  transition: all 0.2s;
+}
+#parse-btn:hover {
+  background: #1a252f;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px rgba(44, 62, 80, 0.25);
+}
+
+/* 飛星四化追蹤小圖示網格 */
+.sihua-boards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 5px;
+}
+.s-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1px;
+  background-color: #94a3b8;
+  border: 1px solid #64748b;
+  aspect-ratio: 1;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.s-cell {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: #1e293b;
+  font-weight: 900;
+  line-height: 1.1;
+  padding: 1px;
+  text-align: center;
+  letter-spacing: -0.5px;
+  flex-wrap: wrap;
+}
+.s-center {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: 1px;
+}
+.s-center.bg-lu {
+  background-color: #fce7f3;
+  color: #db2777;
+}
+.s-center.bg-ji {
+  background-color: #dcfce7;
+  color: #0f172a;
+}
+
+/* 一般按鈕群組 */
+.button-group {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+.button-group button {
+  padding: 8px 0;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  transition: all 0.2s;
+  width: 100%;
+  font-weight: 500;
+}
+.button-group button:hover {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+.button-group button.active {
+  background-color: #2980b9;
+  color: white;
+  border-color: #2980b9;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(41, 128, 185, 0.3);
+  transform: translateY(-1px);
+}
+
+/* 右側命盤與格局區域 */
+.chart-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 540px;
+  overflow-x: auto;
+}
+
+/* 手機版響應式縮放：解決左右裁切問題 */
+@media (max-width: 600px) {
+  .chart-container {
+    zoom: 0.85;
+  }
+  .bazi-display,
+  .sanfang-display {
+    zoom: 0.85;
+  }
+  .top-info-bar {
+    zoom: 0.9;
+  }
+}
+@media (max-width: 480px) {
+  .chart-container {
+    zoom: 0.72;
+  }
+  .bazi-display,
+  .sanfang-display {
+    zoom: 0.72;
+  }
+  .top-info-bar {
+    zoom: 0.8;
+    font-size: 15px;
+  }
+}
+@media (max-width: 400px) {
+  .chart-container {
+    zoom: 0.62;
+  }
+  .bazi-display,
+  .sanfang-display {
+    zoom: 0.62;
+  }
+  .top-info-bar {
+    zoom: 0.75;
+    font-size: 14px;
+  }
+}
+
+/* 確保動態縮放效果平滑 */
+.chart-scale-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transform-origin: top center;
+}
+
+/* 頂部資訊列 (改為垂直上下兩列佈局) */
+.top-info-bar {
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1e40af;
+  background: #ffffff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box;
+  letter-spacing: 1px;
+  display: none;
+  flex-direction: column; /* 改為上下排列 */
+  align-items: center;
+  gap: 8px; /* 上下兩列的間距 */
+}
+
+/* 底部操作列 (包含八字、三方、輸入框，緊湊橫排) */
+.top-info-bottom-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 15px; /* 區塊間的間距 */
+  flex-wrap: wrap; /* 螢幕極小才允許換行 */
+  width: 100%;
+}
+
+.bazi-display {
+  display: flex;
+  flex-direction: row;
+  gap: 8px; /* 柱子之間的間距 */
+  background: transparent; /* 拿掉白色背景，完全融入底色 */
+  padding: 4px 12px;
+  align-items: center;
+  border: none; /* ★ 拿掉外框 */
+  box-shadow: none; /* ★ 拿掉陰影 */
+}
+.bazi-pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1e40af;
+  line-height: 1.1;
+}
+
+.sanfang-display {
+  display: none;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1e40af;
+  text-align: center;
+  letter-spacing: 1px;
+  background: transparent; /* 拿掉白色背景，完全融入底色 */
+  padding: 10px 12px;
+  min-width: auto;
+  border: none; /* ★ 拿掉外框 */
+  box-shadow: none; /* ★ 拿掉陰影 */
+  box-sizing: border-box;
+}
+
+/* 命盤主體 */
+.chart-container {
+  display: grid;
+  grid-template-columns: repeat(4, 130px);
+  grid-template-rows: repeat(4, 130px);
+  gap: 1px;
+  background-color: #cbd5e1;
+  padding: 2px;
+  border: 3px solid #334155;
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  width: 530px;
+  height: 530px;
+}
+.cell {
+  background-color: #ffffff;
+  position: relative;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.center-cell {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  background-color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+/* 四化中宮小圖 Grid 樣式 */
+.mini-charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 15px;
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+}
+.mini-chart {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1px;
+  background-color: #cbd5e1;
+  border: 1px solid #94a3b8;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+.mini-cell {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: #334155;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+.mini-center {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  background-color: #f1f5f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  transition: color 0.3s;
+}
+
+.branch-name {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-size: 15px;
+  color: #64748b;
+  font-weight: bold;
+  z-index: 1;
+  text-align: center;
+  line-height: 1.15;
+}
+
+/* 左下方副星小字區域 */
+.minor-stars-bottom-left {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: calc(100% - 30px);
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.3;
+  align-content: flex-end;
+  z-index: 1;
+}
+
+/* 宮位名稱與歲數範圍 */
+.palace-info {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: normal;
+  margin-bottom: 2px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.stars-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  margin-top: 3px;
+  flex-wrap: wrap;
+  /* === 新增：確保星曜永遠漂浮在浮水印的上方 === */
+  position: relative;
+  z-index: 1;
+}
+.star-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.star-name {
+  font-size: 30px;
+  font-weight: bold;
+  color: #0f172a;
+  line-height: 1.1;
+}
+.star-brightness {
+  font-size: 20px;
+  margin-top: 4px;
+  font-weight: bold;
+}
+.overall-brightness {
+  /* 絕對定位至宮位正中央 */
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* 恢復原本的大小與粗細，拿掉半透明 */
+  font-size: 24px;
+  font-weight: bold;
+
+  /* 避免干擾滑鼠點擊 */
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bottom-area {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  min-height: 54px;
+}
+
+.bazi-display {
+  display: flex;
+  flex-direction: row;
+  gap: 8px; /* 柱子之間的間距 */
+  background: transparent; /* 拿掉白色背景，完全融入底色 */
+  padding: 4px 12px;
+  align-items: center;
+  border: none; /* ★ 拿掉外框 */
+  box-shadow: none; /* ★ 拿掉陰影 */
+}
+.bazi-pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1e40af;
+  line-height: 1.1;
+}
+
+.sanfang-display {
+  display: none;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1e40af;
+  text-align: center;
+  letter-spacing: 1px;
+  background: transparent; /* 拿掉白色背景，完全融入底色 */
+  padding: 10px 12px;
+  min-width: auto;
+  border: none; /* ★ 拿掉外框 */
+  box-shadow: none; /* ★ 拿掉陰影 */
+  box-sizing: border-box;
+}
+
+/* 星性表格彈窗 */
+#star-nature-modal {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  right: 105px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e2e8f0;
+  padding: 15px;
+  z-index: 999;
+  width: calc(100vw - 140px);
+  max-width: 360px;
+  max-height: 60vh;
+  overflow-y: auto;
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.sn-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.sn-table th,
+.sn-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  color: #334155;
+}
+.sn-table th {
+  color: #1e40af;
+  font-weight: bold;
+  background-color: #f8fafc;
+  position: sticky;
+  top: -15px;
+  box-shadow: 0 1px 0 #cbd5e1;
+}
+.sn-table td:first-child {
+  font-weight: 900;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+/* 懸浮廟旺按鈕 */
+.floating-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background-color: #94a3b8;
+  opacity: 0.8;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.floating-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 預設命盤儲存列 (分類呈現) */
+.presets-bar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+  padding-top: 25px;
+  border-top: 2px dashed #cbd5e1;
+}
+.preset-category-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.preset-category-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #475569;
+  border-left: 4px solid #2980b9;
+  padding-left: 8px;
+  background: #f8fafc;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.preset-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.preset-btn {
+  padding: 8px 18px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.preset-btn:hover {
+  background-color: #e2e8f0;
+  transform: translateY(-2px);
+}
+.edit-preset-btn {
+  padding: 10px 30px;
+  background-color: #334155;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.edit-preset-btn:hover {
+  background-color: #1e293b;
+  transform: translateY(-2px);
+}
+
+/* 格局顯示區 */
+.patterns-wrapper {
+  width: 100%;
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box;
+}
+.patterns-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1e40af;
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 10px;
+}
+.patterns-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.pattern-row {
+  font-size: 16px;
+  color: #334155;
+  line-height: 1.8;
+  display: flex;
+  border-bottom: 1px dashed #e2e8f0;
+  padding: 8px 0;
+  align-items: center;
+}
+.pattern-row:last-child {
+  border-bottom: none;
+}
+.pattern-branch {
+  font-weight: bold;
+  color: #0f172a;
+  margin-right: 5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  min-width: 24px;
+  text-align: center;
+}
+.pattern-branch.active {
+  background-color: #4ade80;
+  color: white;
+}
+.pattern-text {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* 自訂訊息/編輯彈窗 */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.6);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+}
+.modal-box {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid #e2e8f0;
+  position: relative;
+}
+@keyframes popIn {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 檔案上傳隱藏按鈕 */
+.file-upload-label {
+  padding: 6px 12px;
+  background: #10b981;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+}
