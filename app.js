@@ -128,6 +128,20 @@ let appState = {
   showBureau: false, showFlow: false, showYinShen: false,
 };
 
+// 自動偵測環境，若在 GitHub 上則隱藏開發區塊
+function initDevFeatures() {
+  const devSection = document.getElementById('dev-section');
+  const hostname = window.location.hostname;
+  
+  // 如果網址不是本地端 (localhost 或 127.0.0.1) 且不是空字串 (代表在線上環境)
+  if (hostname !== 'localhost' && hostname !== '127.0.0.1' && hostname !== '') {
+    if (devSection) {
+      devSection.style.display = 'none';
+      console.log("偵測到線上環境：已隱藏開發中功能。");
+    }
+  }
+}
+
 function updateToggleButtons() {
   const dayBtn = document.getElementById("day-stem-btn");
   const yearBtn = document.getElementById("year-stem-btn");
@@ -1507,4 +1521,5 @@ window.onload = () => {
   renderPresetsBar();
   toggleLeapMonth();
   updateUI();
+  initDevFeatures(); // 啟動自動隱藏判斷
 };
