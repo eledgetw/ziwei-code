@@ -46,3 +46,13 @@ git clone https://github.com/eledgetw/ziwei-code.git
 </div>
 
 💡 小提示：若您使用手機瀏覽，可先截圖後再使用 LINE 的「掃描」功能選擇圖片進行付款。
+
+## 📬 聯絡作者 (Contact)
+
+如果您在使用上有任何建議、發現 Bug，或是對邏輯判定有疑問，歡迎透過以下方式與我聯繫：
+
+- **Email**: [eledgetw@gmail.com](mailto:eledgetw@gmail.com)
+- **GitHub Issues**: 您也可以直接在本專案的 [Issues](https://github.com/eledgetw/ziwei-code/issues) 頁面提出回饋。
+
+---
+**用心排盤，理性論命。**
