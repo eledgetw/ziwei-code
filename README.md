@@ -1,23 +1,14 @@
 紫微斗數甲級星排盤系統 (Ziwei Doushu Charting System)
-這是一套基於邏輯與精準度開發的紫微斗數線上排盤工具。開發者身兼專職交易員與軟體愛好者雙重身分，致力於將傳統命理的繁瑣規則轉化為極簡、無廣告、且具備現代軟體架構的數位系統。
+這是一套紫微斗數線上排盤工具。
+開發者身兼交易員與軟體愛好者雙重身分，致力於將傳統命理的繁瑣規則轉化為極簡、無廣告、且具備現代軟體架構的數位系統。
 
 🌟 核心特色
-精準演算法：整合 lunar-javascript 套件，精確處理西元/民國、陰曆/陽曆轉換及閏月判定。
-
-五虎將架構：採用標準的「關注點分離」架構，代碼結構清晰，易於維護與擴充。
-
-index.html：純淨的 UI 骨架。
-
-style.css：現代化響應式排盤介面。
-
-constants.js：完整的斗數資料庫（星曜、廟旺、格局規則）。
-
-app.js：核心算盤與畫面渲染邏輯。
-
-presets.js：本地存檔與匯出入模組。
+精準演算法：精確處理西元/民國、陰曆/陽曆轉換及閏月判定。
+變盤控制：除了傳統命理上的天盤，也支援太歲變盤系統。
+流年遁流年星變盤
+日遁日星變盤 (需對斗數卦有基本認識)
 
 職業聯動：內建「斗數職業」擴充頁面，提供深層次的命盤解析參考。
-
 數據自主：支援 CSV / Excel (XLSX) 批次匯入匯出，方便研究者建立個人命例資料庫。
 
 截圖分享：一鍵產生高畫質命盤圖片，方便儲存或社交分享。
@@ -28,9 +19,7 @@ Frontend: HTML5, CSS3, Vanilla JavaScript (ES6+)
 Library:
 
 lunar-javascript (曆法轉換)
-
 SheetJS (Excel 處理)
-
 html2canvas (圖片生成)
 
 📦 安裝與使用
@@ -57,3 +46,13 @@ git clone https://github.com/eledgetw/ziwei-code.git
 </div>
 
 💡 小提示：若您使用手機瀏覽，可先截圖後再使用 LINE 的「掃描」功能選擇圖片進行付款。
+
+## 📬 聯絡作者 (Contact)
+
+如果您在使用上有任何建議、發現 Bug，或是對邏輯判定有疑問，歡迎透過以下方式與我聯繫：
+
+- **Email**: [eledgetw@gmail.com](mailto:eledgetw@gmail.com)
+- **GitHub Issues**: 您也可以直接在本專案的 [Issues](https://github.com/eledgetw/ziwei-code/issues) 頁面提出回饋。
+
+---
+**用心排盤，理性論命。**
