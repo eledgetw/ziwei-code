@@ -27,6 +27,7 @@ html2canvas (圖片生成)
 
 直接訪問線上版 (推薦)：
 https://eledgetw.github.io/ziwei-code/
+建議用電腦、或正平板開啟較適合閱讀。手機開啟命盤太小較不易閱讀。
 
 克隆 (Clone) 本倉庫：
 
