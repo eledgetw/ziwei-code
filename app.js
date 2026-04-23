@@ -115,6 +115,19 @@ function checkPatterns(p, palaces, sysState, effectiveStem) {
       patterns.push("雄宿朝垣");
     }
   }
+
+  // 判定「無往不利」格局 (自化權條件：壬紫、癸巨、庚武)
+  if (effectiveStem) {
+    const yinStemIdx = wuhuBase[effectiveStem];
+    const diffFromYin = (p - 2 + 12) % 12;
+    const pStem = stemsArr[(yinStemIdx + diffFromYin) % 10];
+    if ((pStem === "壬" && pHas("紫微")) || 
+        (pStem === "癸" && pHas("巨門")) || 
+        (pStem === "庚" && pHas("武曲"))) {
+      patterns.push("無往不利");
+    }
+  }
+
   return patterns;
 }
 
@@ -1076,11 +1089,19 @@ function generateChart() {
           `;
     let wrapperStyle = `gap: ${gapSize}px;`;
 
-    let pInfoText = "";
+    let pInfoHTML = "";
     if (palaceNames[i] && ageRanges[i]) {
-      pInfoText = `${palaceNames[i]} ${ageRanges[i]}`;
+      const isLifePalace = palaceNames[i] === "命宮";
+      const labelClass = isLifePalace ? "palace-label life-palace" : "palace-label";
+
+      const bodyPalaceIdx = (appState.birthMonth !== null && appState.birthHour !== null) 
+                            ? (2 + appState.birthMonth + appState.birthHour) % 12 
+                            : null;
+      const isBodyPalace = i === bodyPalaceIdx;
+      const bodyLabel = isBodyPalace ? `<span class="palace-label body-palace">身</span>` : "";
+
+      pInfoHTML = `<div class="palace-info"><span class="${labelClass}">${palaceNames[i]}</span> ${ageRanges[i]}${bodyLabel}</div>`;
     }
-    let pInfoHTML = pInfoText ? `<div class="palace-info">${pInfoText}</div>` : "";
 
     let minorStarsHTML = "";
     if (palaces[i].bottomLeftStars && palaces[i].bottomLeftStars.length > 0) {

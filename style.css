@@ -425,6 +425,48 @@ body {
   margin-bottom: 2px;
   text-align: center;
   letter-spacing: 1px;
+  white-space: nowrap;  /* 關鍵：強制不換行 */
+  display: flex;        /* 使用 flex 排版確保對齊 */
+  align-items: center;  /* 垂直居中對齊 */
+  justify-content: center;
+  gap: 3px;             /* 增加文字、歲數與身宮標籤的小間隔 */
+}
+
+/* 稍微縮小標籤內的字體，確保在 130px 的格子內塞得下 */
+.palace-label {
+  padding: 1px 3px;
+  border-radius: 3px;
+  display: inline-block;
+  font-size: 10px;      /* 稍微縮小字體提升相容性 */
+}
+
+/* 新增：宮位標籤通用樣式與命宮特殊樣式 */
+.palace-label {
+  padding: 1px 4px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.life-palace {
+  background-color: #ef4444 !important; /* 紅色背景 */
+  color: #ffffff !important;           /* 白色文字 */
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.body-palace {
+  background-color: #3b82f6 !important; /* 藍色背景 */
+  color: #ffffff !important;           /* 白色文字 */
+  font-weight: bold;
+  margin-left: 1px;                    /* 與歲數保持一點間隔 */
+}
+
+.advantage-palace {
+  background-color: #10b981 !important; /* 翡翠綠背景 */
+  color: #ffffff !important;           /* 白色文字 */
+  font-weight: bold;
+  margin-left: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .stars-wrapper {
