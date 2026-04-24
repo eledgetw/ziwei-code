@@ -796,3 +796,9 @@ body {
   font-weight: bold;
   display: inline-block;
 }
+
+/* 飛星四化小圖示專用顏色類別 */
+.sihua-lu { color: #db2777 !important; }   /* 化祿：桃紅色/粉色 */
+.sihua-quan { color: #2563eb !important; } /* 化權：藍色 */
+.sihua-ji { color: #059669 !important; }   /* 化忌：綠色 */
+

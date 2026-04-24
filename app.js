@@ -1019,7 +1019,7 @@ function generateChart() {
       });
       let comb = "";
       for (let c = 0; c < yinLuCount; c++) comb += "●";
-      for (let c = 0; c < yinJiCount; c++) comb += "x";
+      for (let c = 0; c < yinJiCount; c++) comb += "X";
       yinShenSymbol = comb || "-";
     }
 
@@ -1176,14 +1176,17 @@ function generateChart() {
         if (starPosMap.hasOwnProperty(targetStarName)) {
           let pIdx = starPosMap[targetStarName];
 
-          let dotColor = "#1e293b";
-          if (appState.sihuaMode === "bazi" && index === 3) {
-            dotColor = "#2563eb";
-          } else if (appState.sihuaMode === "target" && index === 0) {
-            dotColor = "#2563eb";
-          }
+          const isOrigin = (appState.sihuaMode === "bazi" && index === 3) || 
+                           (appState.sihuaMode === "target" && index === 0);
+          
+          const dotColor = isOrigin ? "#2563eb" : "#1e293b";
+          
+          // 根據是否為發起宮位決定符號：權(實心■/空心□)、科(實心▲/空心△)
+          let symbol = sihuaSymbols[type];
+          if (type === "權") symbol = isOrigin ? "■" : "□";
+          if (type === "科") symbol = isOrigin ? "▲" : "△";
 
-          sihuaMarksByType[type][pIdx] += `<span style="color:${dotColor};">${sihuaSymbols[type]}</span>`;
+          sihuaMarksByType[type][pIdx] += `<span style="color:${dotColor};">${symbol}</span>`;
         }
       }
     });
@@ -1262,7 +1265,7 @@ function generateChart() {
   const miniBoardsConfigs = [
     { type: "lu", stars: [{ n: "紅鸞", l: "鸞" }, { n: "天喜", l: "喜" }, { n: "咸池", l: "咸" }, { n: "天姚", l: "姚" }], text: "鸞咸<br>喜姚" },
     { type: "ji", stars: [{ n: "紅鸞", l: "鸞" }, { n: "天喜", l: "喜" }, { n: "咸池", l: "咸" }, { n: "天姚", l: "姚" }], text: "鸞咸<br>喜姚" },
-    { type: "lu", stars: [{ n: "天府", l: "府" }, { n: "天相", l: "相" }, { n: "祿存", l: "存" }], text: "府相<br>祿處" },
+    { type: "fuxiang_luquan", text: "府相<br>祿處" },
     { type: "ji", stars: [{ n: "太陽", l: "日" }, { n: "太陰", l: "月" }, { n: "天梁", l: "梁" }, { n: "天馬", l: "馬" }], text: "日月<br>梁馬" },
     { type: "lu", stars: [{ n: "天機", l: "機" }, { n: "太陰", l: "月" }, { n: "天同", l: "同" }, { n: "天梁", l: "梁" }], text: "機月<br>同梁" },
     { type: "ji", stars: [{ n: "天機", l: "機" }, { n: "太陰", l: "月" }, { n: "天同", l: "同" }, { n: "天梁", l: "梁" }], text: "機月<br>同梁" },
@@ -1392,14 +1395,30 @@ function generateChart() {
         let sYin = palaceStems[2];
         let tYin = sYin ? getStarPos(sihuaTable[sYin]["忌"]) : null;
         if (tYin !== null) marks[tYin] += '<span style="color:#059669; font-size:11px; letter-spacing:-1px;">火土</span>';
+      } else if (b.type === "fuxiang_luquan") {
+        // 1. 祿的邏輯：天府->府、天相->相、祿存->祿 (套用 sihua-lu class)
+        const luTargets = [{ n: "天府", l: "府" }, { n: "天相", l: "相" }, { n: "祿存", l: "祿" }];
+        luTargets.forEach(s => {
+          let p = getStarPos(s.n);
+          let target = getHuaTargetPos(p, "祿");
+          if (target !== null) marks[target] += `<span class="sihua-lu">${s.l}</span>`;
+        });
+
+        // 2. 權的邏輯：天府->權、天相->處 (套用 sihua-quan class)
+        const quanTargets = [{ n: "天府", l: "權" }, { n: "天相", l: "處" }];
+        quanTargets.forEach(s => {
+          let p = getStarPos(s.n);
+          let target = getHuaTargetPos(p, "權");
+          if (target !== null) marks[target] += `<span class="sihua-quan">${s.l}</span>`;
+        });
       } else {
         let huaType = b.type === "lu" ? "祿" : "忌";
         b.stars.forEach((s) => {
           let p = getStarPos(s.n);
           let target = getHuaTargetPos(p, huaType);
           if (target !== null) {
-            let color = b.type === "lu" ? "#db2777" : "#059669";
-            marks[target] += `<span style="color:${color};">${s.l}</span>`;
+            const cls = b.type === "lu" ? "sihua-lu" : "sihua-ji";
+            marks[target] += `<span class="${cls}">${s.l}</span>`;
           }
         });
       }
@@ -1407,7 +1426,7 @@ function generateChart() {
 
     let bgClass = "";
     let centerStyle = "";
-    if (b.type === "lu") {
+    if (b.type === "lu" || b.type === "fuxiang_luquan") {
       bgClass = "bg-lu";
     } else if (b.type === "kong_jie_ben" || b.type === "chang_qu_ben" || b.type === "ke_xing_chang_qu") {
       centerStyle = "background-color: #ffffff; color: #059669;";
