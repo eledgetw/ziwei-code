@@ -38,15 +38,15 @@ git clone https://github.com/eledgetw/ziwei-code.git
 🔒 隱私說明
 本系統為純前端運作，所有命盤數據僅儲存在使用者的瀏覽器本地空間 (localStorage)。開發者不會，也無法存取您的任何個人資料或八字紀錄。
 
-☕ 贊助與支持 (Support)
-如果您覺得這套系統對您的研究或生活有幫助，歡迎請開發者喝杯咖啡($60 NTD)！您的支持是我持續優化邏輯與開發新功能的動力。
+## 贊助這個專案
+✨ 喜歡這個專案嗎？ ✨
+如果這個工具為你節省了時間 ⏱️，或者對你的研究有所啟發 💡
+🧋 點擊圖示請我喝杯珍奶吧 🧋
 
-<div align="center">
-<img src="./line.png" alt="Line Pay QR Code" width="250" />
-<p><b>掃描上方 LINE Pay 條碼請老人喝咖啡</b></p>
-</div>
+[![請我喝珍奶](https://s3.ap-southeast-1.amazonaws.com/media.anyonelab.com/images/boba/boba-embed-icon.png)](https://eledgetw.bobaboba.me) [![請我喝珍奶](https://s3.ap-southeast-1.amazonaws.com/media.anyonelab.com/images/boba/boba-embed-icon.png)](https://eledgetw.bobaboba.me) [![請我喝珍奶](https://s3.ap-southeast-1.amazonaws.com/media.anyonelab.com/images/boba/boba-embed-icon.png)](https://eledgetw.bobaboba.me)
+←←(點擊珍奶圖示贊助作者)
+這能讓程式碼持續穩定運行，也讓更多靈感不斷湧現！✨
 
-💡 小提示：若您使用手機瀏覽，可先截圖後再使用 LINE 的「掃描」功能選擇圖片進行付款。
 
 ## 📬 聯絡作者 (Contact)
 
