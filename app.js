@@ -1124,11 +1124,43 @@ function generateChart() {
   let patternsHTML = "";
   for (let i = 0; i < 12; i++) {
     let matchedPatterns = checkPatterns(i, palaces, appState, effectiveStem);
+
+    // === 新增：自沖判定邏輯 ===
+    let stem = palaceStems[i];
+    if (stem && typeof sihuaTable !== 'undefined' && sihuaTable[stem]) {
+      let jiStar = sihuaTable[stem]["忌"];
+      let jiPos = null;
+      // 找出化忌星在變盤後的位置
+      for (let j = 0; j < 12; j++) {
+        if (palaces[j].stars.some((s) => s.name === jiStar)) {
+          jiPos = j;
+          break;
+        }
+      }
+      if (jiPos !== null) {
+        // 找出忌沖宮位(jiPos)裡面的主星
+        const main14Stars = ["紫微", "天機", "太陽", "武曲", "天同", "廉貞", "天府", "太陰", "貪狼", "巨門", "天相", "天梁", "七殺", "破軍"];
+        let targetMainStars = palaces[jiPos].stars.filter((s) => main14Stars.includes(s.name)).map((s) => s.name);
+        
+        // 檢查這些主星的「原盤」位置是否等於 i (亦即陰神是否跟 i 同宮)
+        let isZiChong = targetMainStars.some((sName) => {
+          let origP = getOriginalPos(sName);
+          return origP === i;
+        });
+        
+        if (isZiChong) {
+          matchedPatterns.push("自沖");
+        }
+      }
+    }
+    // =========================
+
     let patternHTMLList = "";
 
     if (matchedPatterns.length > 0) {
       patternHTMLList = " 、 " + matchedPatterns.map((ptn) => {
-            let isBad = badPatternsList.includes(ptn);
+            // 將「自沖」加入綠色凶格判定中
+            let isBad = badPatternsList.includes(ptn) || ptn === "自沖";
             let ptnStyle = isBad ? "color: #059669; font-weight: bold;" : "color: #334155;";
             return `<span style="${ptnStyle}">${ptn}</span>`;
           }).join("、");
@@ -1278,6 +1310,7 @@ function generateChart() {
     { type: "chang_qu_ben", stars: [], text: "昌曲<br>本家" },
     { type: "ke_xing_chang_qu", stars: [], text: "科星<br>昌曲" },
     { type: "wuxing_changsheng", stars: [], text: "五行<br>長生" },
+    { type: "wuxing_shaxing", stars: [], text: "無形<br>煞星" },
   ];
 
   miniBoardsConfigs.forEach((b) => {
@@ -1383,21 +1416,47 @@ function generateChart() {
         let tXu = sXu ? getStarPos(sihuaTable[sXu]["科"]) : null;
         if (tXu !== null) marks[tXu] += '<span style="color:#dc2626;">家</span>';
       } else if (b.type === "wuxing_changsheng") {
-        let sSi = palaceStems[5];
-        let tSi = sSi ? getStarPos(sihuaTable[sSi]["忌"]) : null;
-        if (tSi !== null) marks[tSi] += '<span style="color:#059669;">金</span>';
-        let sShen = palaceStems[8];
-        let tShen = sShen ? getStarPos(sihuaTable[sShen]["忌"]) : null;
-        if (tShen !== null) marks[tShen] += '<span style="color:#059669;">水</span>';
-        let sHai = palaceStems[11];
-        let tHai = sHai ? getStarPos(sihuaTable[sHai]["忌"]) : null;
-        if (tHai !== null) marks[tHai] += '<span style="color:#059669;">木</span>';
-        let sYin = palaceStems[2];
-        let tYin = sYin ? getStarPos(sihuaTable[sYin]["忌"]) : null;
-        if (tYin !== null) marks[tYin] += '<span style="color:#059669; font-size:11px; letter-spacing:-1px;">火土</span>';
-      } else if (b.type === "fuxiang_luquan") {
-        // 1. 祿的邏輯：天府->府、天相->相、祿存->祿 (套用 sihua-lu class)
-        const luTargets = [{ n: "天府", l: "府" }, { n: "天相", l: "相" }, { n: "祿存", l: "祿" }];
+          let sSi = palaceStems[5];
+          let tSi = sSi ? getStarPos(sihuaTable[sSi]["忌"]) : null;
+          if (tSi !== null) marks[tSi] += '<span style="color:#059669;">金</span>';
+          let sShen = palaceStems[8];
+          let tShen = sShen ? getStarPos(sihuaTable[sShen]["忌"]) : null;
+          if (tShen !== null) marks[tShen] += '<span style="color:#059669;">水</span>';
+          let sHai = palaceStems[11];
+          let tHai = sHai ? getStarPos(sihuaTable[sHai]["忌"]) : null;
+          if (tHai !== null) marks[tHai] += '<span style="color:#059669;">木</span>';
+          let sYin = palaceStems[2];
+          let tYin = sYin ? getStarPos(sihuaTable[sYin]["忌"]) : null;
+          if (tYin !== null) marks[tYin] += '<span style="color:#059669; font-size:11px; letter-spacing:-1px;">火土</span>';
+        } else if (b.type === "wuxing_shaxing") {
+          const evilStars = ["擎羊", "陀羅", "火星", "鈴星"];
+          const main14 = ["紫微", "天機", "太陽", "武曲", "天同", "廉貞", "天府", "太陰", "貪狼", "巨門", "天相", "天梁", "七殺", "破軍"];
+          evilStars.forEach(eStar => {
+            let pIdx = getStarPos(eStar);
+            if (pIdx !== null) {
+              // 找出該煞星所在宮位在原盤的陰神主星
+              let origMains = main14.filter(s => getOriginalPos(s) === pIdx);
+              // 如果該宮位原盤為空宮，則借對宮主星
+              if (origMains.length === 0) {
+                let oppIdx = (pIdx + 6) % 12;
+                origMains = main14.filter(s => getOriginalPos(s) === oppIdx);
+              }
+              // 疊加處理：如果有兩顆陰神主星，這裡會跑兩次，各自尋找化忌位置
+              origMains.forEach(mStar => {
+                let curP = getStarPos(mStar);
+                if (curP !== null) {
+                  let stem = palaceStems[curP];
+                  let target = stem ? getStarPos(sihuaTable[stem]["忌"]) : null;
+                  if (target !== null) {
+                    marks[target] += '<span style="color:#059669; font-weight:bold;">×</span>';
+                  }
+                }
+              });
+            }
+          });
+        } else if (b.type === "fuxiang_luquan") {
+          // 1. 祿的邏輯：天府->府、天相->相、祿存->祿 (套用 sihua-lu class)
+          const luTargets = [{ n: "天府", l: "府" }, { n: "天相", l: "相" }, { n: "祿存", l: "祿" }];
         luTargets.forEach(s => {
           let p = getStarPos(s.n);
           let target = getHuaTargetPos(p, "祿");
