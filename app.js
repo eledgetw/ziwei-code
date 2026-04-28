@@ -1531,6 +1531,9 @@ document.addEventListener("keydown", function (e) {
 });
 
 async function copyChartToClipboard() {
+  // 加入快門音效
+  new Audio('shutter.mp3').play().catch(e => console.log('音效播放失敗:', e));
+  
   const btn = document.getElementById("copy-chart-btn");
   const originalText = btn.innerHTML;
   btn.innerHTML = "⏳";
@@ -1572,6 +1575,9 @@ async function copyChartToClipboard() {
 }
 
 async function copyHeaderToClipboard() {
+  // 加入快門音效
+  new Audio('shutter.mp3').play().catch(e => console.log('音效播放失敗:', e));
+  
   const btn = document.getElementById("copy-header-btn");
   const originalText = btn.innerHTML;
   btn.innerHTML = "⏳";
