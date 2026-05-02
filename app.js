@@ -746,8 +746,14 @@ function generateChart() {
     if (appState.birthHour !== null) {
       const huoBase = { 寅: 1, 午: 1, 戌: 1, 申: 2, 子: 2, 辰: 2, 巳: 3, 酉: 3, 丑: 3, 亥: 9, 卯: 9, 未: 9 };
       const lingBase = { 寅: 3, 午: 3, 戌: 3, 申: 10, 子: 10, 辰: 10, 巳: 10, 酉: 10, 丑: 10, 亥: 10, 卯: 10, 未: 10 };
-      addStar("火星", (huoBase[yb] + appState.birthHour) % 12);
-      addStar("鈴星", (lingBase[yb] + appState.birthHour) % 12);
+      if (appState.useDayStemMode && appState.bazi) {
+        let dayBranch = appState.bazi[1].charAt(1);
+        addStar("火星", (huoBase[dayBranch] + appState.birthHour) % 12);
+        addStar("鈴星", (lingBase[dayBranch] + appState.birthHour) % 12);
+      } else {
+        addStar("火星", (huoBase[yb] + appState.birthHour) % 12);
+        addStar("鈴星", (lingBase[yb] + appState.birthHour) % 12);
+      }
     }
 
     addMinorStar("紅鸞", (3 - ybIdx + 12) % 12, true);
