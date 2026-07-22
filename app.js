@@ -1522,7 +1522,88 @@ function generateChart() {
   document.getElementById("sihua-boards-grid").innerHTML = miniBoardsHtml;
 }
 
-document.addEventListener("contextmenu", (event) => event.preventDefault());
+// 建立自訂右鍵選單元素
+const customContextMenu = document.createElement("div");
+customContextMenu.id = "star-context-menu";
+customContextMenu.style.position = "absolute";
+customContextMenu.style.display = "none";
+customContextMenu.style.backgroundColor = "#ffffff";
+customContextMenu.style.border = "1px solid #cbd5e1";
+customContextMenu.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+customContextMenu.style.borderRadius = "8px";
+customContextMenu.style.padding = "10px";
+customContextMenu.style.zIndex = "10000";
+customContextMenu.style.width = "220px";
+document.body.appendChild(customContextMenu);
+
+// 點擊其他地方關閉選單
+document.addEventListener("click", () => {
+  customContextMenu.style.display = "none";
+});
+
+document.addEventListener("contextmenu", (event) => {
+  event.preventDefault();
+  
+  const cell = event.target.closest(".cell");
+  if (cell && cell.id && cell.id.startsWith("cell-")) {
+    const pIdx = parseInt(cell.id.replace("cell-", ""));
+    
+    // 紫微星系推算位移 (紫微為0，逆推回紫微的位置)
+    const ziweiStars = [
+      { name: "紫微", offset: 0 },
+      { name: "天機", offset: 1 },
+      { name: "太陽", offset: 3 },
+      { name: "武曲", offset: 4 },
+      { name: "天同", offset: 5 },
+      { name: "廉貞", offset: 8 }
+    ];
+    
+    // 天府星系推算位移 (天府為0，逆推回天府，再轉為紫微位置)
+    const tianfuStars = [
+      { name: "天府", fOffset: 0 },
+      { name: "太陰", fOffset: 1 },
+      { name: "貪狼", fOffset: 2 },
+      { name: "巨門", fOffset: 3 },
+      { name: "天相", fOffset: 4 },
+      { name: "天梁", fOffset: 5 },
+      { name: "七殺", fOffset: 6 },
+      { name: "破軍", fOffset: 10 }
+    ];
+
+    let menuHTML = `<div style="font-size:13px; font-weight:bold; color:#1e40af; margin-bottom:6px; border-bottom:1px solid #e2e8f0; padding-bottom:4px;">紫微星系定位至此宮</div>`;
+    menuHTML += `<div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:5px; margin-bottom:12px;">`;
+    ziweiStars.forEach(star => {
+      let newZ = (pIdx + star.offset) % 12;
+      menuHTML += `<button style="padding:4px 0; font-size:13px; cursor:pointer; border:1px solid #cbd5e1; border-radius:4px; background:#f8fafc; color:#334155;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'" onclick="setZiwei(${newZ}); document.getElementById('star-context-menu').style.display='none';">${star.name}</button>`;
+    });
+    menuHTML += `</div>`;
+
+    menuHTML += `<div style="font-size:13px; font-weight:bold; color:#1e40af; margin-bottom:6px; border-bottom:1px solid #e2e8f0; padding-bottom:4px;">天府星系定位至此宮</div>`;
+    menuHTML += `<div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:5px;">`;
+    tianfuStars.forEach(star => {
+      let f = (pIdx - star.fOffset + 12) % 12;
+      let newZ = (16 - f) % 12; // 由天府位置推回紫微位置
+      menuHTML += `<button style="padding:4px 0; font-size:13px; cursor:pointer; border:1px solid #cbd5e1; border-radius:4px; background:#f8fafc; color:#334155;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'" onclick="setZiwei(${newZ}); document.getElementById('star-context-menu').style.display='none';">${star.name}</button>`;
+    });
+    menuHTML += `</div>`;
+
+    customContextMenu.innerHTML = menuHTML;
+    
+    let posX = event.pageX;
+    let posY = event.pageY;
+    // 確保選單不會超出畫面右側
+    if (posX + 240 > window.innerWidth) {
+        posX = window.innerWidth - 240;
+    }
+    
+    customContextMenu.style.left = `${posX}px`;
+    customContextMenu.style.top = `${posY}px`;
+    customContextMenu.style.display = "block";
+  } else {
+    customContextMenu.style.display = "none";
+  }
+});
+
 document.addEventListener("selectstart", (event) => event.preventDefault());
 document.addEventListener("keydown", function (e) {
   if (
