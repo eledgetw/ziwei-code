@@ -138,7 +138,7 @@ let appState = {
   bureau: null, lifePalaceIdx: null, isForward: true, gender: "男",
   bazi: null, baziStems: null, sihuaMode: "none", brightnessMode: 0,
   currentName: "", useDayStemMode: false, useYearStemMode: false,
-  showBureau: false, showFlow: false, showYinShen: false,
+  showBureau: false, showFlow: false, showYinShen: false, interactiveMode: false,
 };
 
 // 自動偵測環境，若在 GitHub 上則隱藏開發區塊
@@ -255,6 +255,19 @@ function toggleYinShen() {
   } else {
     btn.style.backgroundColor = "#ffffff";
     btn.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+  }
+  updateUI();
+}
+
+function toggleInteractiveMode() {
+  appState.interactiveMode = !appState.interactiveMode;
+  const btn = document.getElementById("toggle-interactive-btn");
+  if (appState.interactiveMode) {
+    btn.style.backgroundColor = "#dbeafe";
+    btn.style.boxShadow = "inset 0 2px 4px rgba(0,0,0,0.1)";
+  } else {
+    btn.style.backgroundColor = "#f1f5f9";
+    btn.style.boxShadow = "none";
   }
   updateUI();
 }
@@ -1185,49 +1198,80 @@ function generateChart() {
   let centerTitleColor = "#1e293b";
   let sihuaMarksByType = { 忌: Array(12).fill(""), 祿: Array(12).fill(""), 科: Array(12).fill(""), 權: Array(12).fill("") };
 
-  if (appState.sihuaMode === "bazi" && appState.baziStems) {
-    if (appState.useYearStemMode || appState.useDayStemMode) {
-      let baziBranchIndices = appState.bazi.map((pillar) => branchNames.indexOf(pillar.charAt(1)));
-      tgStems = baziBranchIndices.map((idx) => palaceStems[idx]);
-    } else {
-      tgStems = appState.baziStems;
-    }
-    centerTitleColor = "#1e293b";
-  } else if (appState.sihuaMode === "target" && appState.target !== null && effectiveStem !== null) {
-    let targetP = appState.target;
-    let sanfangIndices = [targetP, (targetP + 4) % 12, (targetP + 6) % 12, (targetP + 8) % 12];
-    tgStems = sanfangIndices.map((idx) => palaceStems[idx]);
-    centerTitleColor = "#1e293b";
-  }
-
-  if (tgStems.length > 0) {
+  if (appState.interactiveMode) {
     let starPosMap = {};
     for (let i = 0; i < 12; i++) {
       for (let star of palaces[i].stars) {
         starPosMap[star.name] = i;
       }
     }
-    tgStems.forEach((stem, index) => {
+    for (let i = 0; i < 12; i++) {
+      let stem = palaceStems[i];
+      if (!stem || typeof sihuaTable === 'undefined' || !sihuaTable[stem]) continue;
       let transData = sihuaTable[stem];
+      let sanfangIndices = [i, (i + 4) % 12, (i + 6) % 12, (i + 8) % 12];
+      
       for (let type in transData) {
         let targetStarName = transData[type];
         if (starPosMap.hasOwnProperty(targetStarName)) {
-          let pIdx = starPosMap[targetStarName];
-
-          const isOrigin = (appState.sihuaMode === "bazi" && index === 3) || 
-                           (appState.sihuaMode === "target" && index === 0);
-          
-          const dotColor = isOrigin ? "#2563eb" : "#1e293b";
-          
-          // 根據是否為發起宮位決定符號：權(實心■/空心□)、科(實心▲/空心△)
-          let symbol = sihuaSymbols[type];
-          if (type === "權") symbol = isOrigin ? "■" : "□";
-          if (type === "科") symbol = isOrigin ? "▲" : "△";
-
-          sihuaMarksByType[type][pIdx] += `<span style="color:${dotColor};">${symbol}</span>`;
+          let targetPIdx = starPosMap[targetStarName];
+          if (sanfangIndices.includes(targetPIdx)) {
+            let symbol = "";
+            if (type === "祿") symbol = "O";
+            else if (type === "權") symbol = "□";
+            else if (type === "科") symbol = "△";
+            else if (type === "忌") symbol = "X";
+            
+            sihuaMarksByType[type][i] += `<span style="color:#1e293b;">${symbol}</span>`;
+          }
         }
       }
-    });
+    }
+  } else {
+    if (appState.sihuaMode === "bazi" && appState.baziStems) {
+      if (appState.useYearStemMode || appState.useDayStemMode) {
+        let baziBranchIndices = appState.bazi.map((pillar) => branchNames.indexOf(pillar.charAt(1)));
+        tgStems = baziBranchIndices.map((idx) => palaceStems[idx]);
+      } else {
+        tgStems = appState.baziStems;
+      }
+      centerTitleColor = "#1e293b";
+    } else if (appState.sihuaMode === "target" && appState.target !== null && effectiveStem !== null) {
+      let targetP = appState.target;
+      let sanfangIndices = [targetP, (targetP + 4) % 12, (targetP + 6) % 12, (targetP + 8) % 12];
+      tgStems = sanfangIndices.map((idx) => palaceStems[idx]);
+      centerTitleColor = "#1e293b";
+    }
+
+    if (tgStems.length > 0) {
+      let starPosMap = {};
+      for (let i = 0; i < 12; i++) {
+        for (let star of palaces[i].stars) {
+          starPosMap[star.name] = i;
+        }
+      }
+      tgStems.forEach((stem, index) => {
+        let transData = sihuaTable[stem];
+        for (let type in transData) {
+          let targetStarName = transData[type];
+          if (starPosMap.hasOwnProperty(targetStarName)) {
+            let pIdx = starPosMap[targetStarName];
+
+            const isOrigin = (appState.sihuaMode === "bazi" && index === 3) || 
+                             (appState.sihuaMode === "target" && index === 0);
+            
+            const dotColor = isOrigin ? "#2563eb" : "#1e293b";
+            
+            // 根據是否為發起宮位決定符號：權(實心■/空心□)、科(實心▲/空心△)
+            let symbol = sihuaSymbols[type];
+            if (type === "權") symbol = isOrigin ? "■" : "□";
+            if (type === "科") symbol = isOrigin ? "▲" : "△";
+
+            sihuaMarksByType[type][pIdx] += `<span style="color:${dotColor};">${symbol}</span>`;
+          }
+        }
+      });
+    }
   }
 
   const baziDisplay = document.getElementById("bazi-display");
